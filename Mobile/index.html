@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Driving School App</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    body { background-color: #f9f9f9; }
+    .navbar {
+      background: linear-gradient(135deg, #0096FF 0%, #2575fc 100%);
+    }
+    .navbar .nav-link {
+      color: #fff !important;
+    }
+
+    /* Bottom nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background-color: #f8f8f8;
+      border-top: 1px solid #ddd;
+      padding: 8px 0;
+      z-index: 1030;
+    }
+    .bottom-nav .nav-item {
+      flex-grow: 1;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* center for mobile */
+      position: relative;
+      cursor: pointer;
+    }
+    .bottom-nav .nav-item i {
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+    .bottom-nav .nav-item span {
+      font-size: 12px;
+      position: relative;
+      padding-bottom: 4px;
+    }
+    .bottom-nav .nav-item.active span::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 2px;
+      background-color: #007bff;
+      border-radius: 2px;
+    }
+    .bottom-nav .nav-item.active {
+      color: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#">Driving School</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home me-2"></i>Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="sample.html"><i class="fas fa-user-plus me-2"></i>Register</a></li>
+          <li class="nav-item"><a class="nav-link" href="report.html"><i class="fas fa-file-alt me-2"></i>Reports</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="pb-5">
+    <!-- Home Section -->
+    <section id="home" class="container my-4">
+      <div class="card shadow-sm p-4">
+        <h2 class="mb-3">Welcome to F.Chikuse Driving School</h2>
+        <p class="lead">Learn to drive safely and confidently with our professional instructors.</p>
+      </div>
+    </section>
+
+    <!-- Registration Form -->
+    <section id="register" class="container my-4">
+      <h2 class="mb-3">Register New Student</h2>
+      <form id="registrationForm" class="card p-3 shadow-sm">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <input type="text" id="title" class="form-control" placeholder="Title (Mr/Ms)" required>
+          </div>
+          <div class="col-md-6">
+            <input type="text" id="firstname" class="form-control" placeholder="First Name" required>
+          </div>
+          <div class="col-md-6">
+            <input type="text" id="surname" class="form-control" placeholder="Surname" required>
+          </div>
+          <div class="col-md-6">
+            <input type="tel" id="phone" class="form-control" placeholder="Mobile Phone Number" required>
+          </div>
+          <div class="col-md-6">
+            <input type="text" id="licence" class="form-control" placeholder="Licence Type" required>
+          </div>
+          <div class="col-md-6">
+            <input type="text" id="period" class="form-control" placeholder="Learning Period" required>
+          </div>
+          <div class="col-md-6">
+            <input type="number" id="amount" class="form-control" placeholder="Amount Paid" required>
+          </div>
+        </div>
+        <div class="mt-3">
+          <button type="submit" class="btn btn-primary w-100">Save Student</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Reports Section -->
+    <section id="reports" class="container my-4">
+      <h2 class="mb-3">Registered Students</h2>
+      <div id="studentList" class="table-responsive">
+        <div class="alert alert-info">Loading...</div>
+      </div>
+    </section>
+  </main>
+  
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <div class="nav-item active" data-target="#home">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </div>
+    <div class="nav-item" data-target="#register">
+      <i class="fas fa-user-plus"></i>
+      <span>Register</span>
+    </div>
+    <div class="nav-item" data-target="#reports">
+      <i class="fas fa-file-alt"></i>
+      <span>Reports</span>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Handle registration form submission
+    document.getElementById("registrationForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const student = {
+        title: document.getElementById("title").value,
+        firstname: document.getElementById("firstname").value,
+        surname: document.getElementById("surname").value,
+        phone: document.getElementById("phone").value,
+        licence: document.getElementById("licence").value,
+        period: document.getElementById("period").value,
+        amount: document.getElementById("amount").value
+      };
+
+      fetch("save_student.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(student)
+      })
+      .then(res => res.text())
+      .then(data => {
+        alert(data);
+        loadStudents(); // refresh list
+      })
+      .catch(err => alert("Error: " + err));
+    });
+
+    // Load students into Reports section
+    function loadStudents() {
+      fetch("list_students.php")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("studentList").innerHTML = html;
+        });
+    }
+
+    // Initial load
+    loadStudents();
+
+    // Bottom nav click scroll
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.bottom-nav .nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        const target = item.getAttribute('data-target');
+        if (target) {
+          const el = document.querySelector(target);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

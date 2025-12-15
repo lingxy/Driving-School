@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Driving School App</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <style>
+    body { background-color: #f9f9f9; }
+
+    /* Gradient navbar */
+    .navbar {
+      background: linear-gradient(135deg, #0096FF 0%, #2575fc 100%);
+    }
+    .navbar .nav-link {
+      color: #fff !important;
+    }
+
+    /* Bottom navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      background-color: #fff;
+      border-top: 1px solid #ddd;
+      padding: 8px 0;
+      z-index: 1030;
+    }
+    .bottom-nav .nav-item {
+      flex-grow: 1;
+      color: #333;
+      display: flex;
+      flex-direction: column; /* icon above label */
+      align-items: flex-start; /* left aligned */
+      padding-left: 12px;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+    }
+    .bottom-nav .nav-item i {
+      font-size: 20px;
+      margin-bottom: 2px;
+    }
+    .bottom-nav .nav-item span {
+      font-size: 13px;
+      position: relative;
+      padding-bottom: 4px;
+    }
+    .bottom-nav .nav-item.active span::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 20px;
+      height: 2px;
+      background-color: #0d6efd;
+      border-radius: 2px;
+    }
+    .bottom-nav .nav-item.active {
+      color: #0d6efd;
+    }
+
+    /* Prevent content from being hidden under bottom nav */
+    main { padding-bottom: 76px; }
+  </style>
+</head>
+<body>
+  <!-- Navbar (brand removed) -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+	
+      <a class="navbar-brand" href="#">Driving Progress</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"
+              aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home me-2"></i>Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="sample.html"><i class="fas fa-car-side me-2"></i>Driving Lessons</a></li>
+          <li class="nav-item"><a class="nav-link" href="report.html"><i class="fas fa-file-alt me-2"></i>Reports</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- Map -->
+    <div id="mapContainer" class="container my-4 d-none">
+      <h3>Lesson Navigation Map</h3>
+      <iframe id="lessonMap" src="" width="100%" height="450" style="border:0;" allowfullscreen loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+    <!-- Lessons Dashboard -->
+    <section id="dashboard" class="container my-4">
+      <h2 class="mb-3">Lessons Dashboard</h2>
+
+      <!-- Student info -->
+      <div id="studentInfo" class="alert alert-info">Search for a student to load their info.</div>
+
+      <!-- Lesson Form -->
+      <form id="lessonForm" class="card p-3 shadow-sm">
+        <div class="mb-3">
+          <label for="lessonChoice" class="form-label">Choose a lesson:</label>
+          <select id="lessonChoice" class="form-select" required>
+            <option value="">-- Select Lesson --</option>
+            <option value="forward">Forward Driving</option>
+            <option value="hill">Hill Start & Three-Point Turn</option>
+            <option value="reverse">Reversing & Parking</option>
+            <option value="parallel">Parallel Parking</option>
+            <option value="perpendicular">Perpendicular Parking</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <input type="text" id="studentSearch" class="form-control" placeholder="Search student record..." required />
+        </div>
+        <div class="mb-3">
+          <button type="button" id="searchBtn" class="btn btn-secondary w-100">Search Student</button>
+        </div>
+
+        <div class="mb-3">
+          <input type="number" id="carMileage" class="form-control" placeholder="Enter car mileage (km)" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Start Lesson</button>
+      </form>
+
+      <!-- Lesson progress results -->
+      <div id="lessonResult" class="mt-4"></div>
+    </section>
+
+    <!-- Placeholder sections for menu anchors -->
+    <section id="home" class="container my-4">
+      <h2 class="h5">Home</h2>
+      <p class="text-muted">Overview content goes here.</p>
+    </section>
+
+    <section id="services" class="container my-4">
+      <h2 class="h5">Reports</h2>
+      <p class="text-muted">Reports content goes here.</p>
+    </section>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <div class="bottom-nav">
+    <div class="nav-item active" data-target="#home">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </div>
+    <div class="nav-item" data-target="#dashboard">
+      <i class="fas fa-concierge-bell"></i>
+      <span>Services</span>
+    </div>
+    <div class="nav-item" data-target="#services">
+      <i class="fas fa-question-circle"></i>
+      <span>Help</span>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Bottom nav active switching + smooth scroll
+    document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.bottom-nav .nav-item').forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        const target = item.getAttribute('data-target');
+        if (target) {
+          const el = document.querySelector(target);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Handle lesson choice and mileage calculation
+    document.getElementById('lessonForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const choice = document.getElementById('lessonChoice').value;
+      const student = document.getElementById('studentSearch').value.trim();
+      const mileage = parseFloat(document.getElementById('carMileage').value);
+
+      if (choice && student && !isNaN(mileage)) {
+        let distance = 0;
+        switch (choice) {
+          case 'forward': distance = 5; break;
+          case 'hill': distance = 3; break;
+          case 'reverse': distance = 2; break;
+          case 'parallel': distance = 1.5; break;
+          case 'perpendicular': distance = 1.5; break;
+        }
+
+        const newMileage = mileage + distance;
+
+        document.getElementById('lessonResult').innerHTML = `
+          <div class="card p-3 shadow-sm">
+            <h3 class="h5 mb-3">Lesson In Progress</h3>
+            <p><strong>Student:</strong> ${student}</p>
+            <p><strong>Lesson:</strong> ${choice}</p>
+            <p><strong>Starting Mileage:</strong> ${mileage} km</p>
+            <p><strong>Distance Covered:</strong> ${distance} km</p>
+            <p><strong>New Mileage:</strong> ${newMileage} km</p>
+          </div>
+        `;
+
+        const mapContainer = document.getElementById('mapContainer');
+        mapContainer.classList.remove('d-none');
+
+        const mapFrame = document.getElementById('lessonMap');
+        let destination = 'Lilongwe Malawi';
+        if (choice === 'hill') destination = 'Lilongwe Hill Start Area';
+        if (choice === 'reverse') destination = 'Lilongwe Parking Lot';
+        if (choice === 'parallel') destination = 'Lilongwe Parallel Parking Zone';
+        if (choice === 'perpendicular') destination = 'Lilongwe Perpendicular Parking Zone';
+        if (choice === 'forward') destination = 'Lilongwe Driving Route';
+
+        // Replace YOUR_API_KEY with a valid Google Maps Embed API key
+        mapFrame.src = `https://www.google.com/maps/embed/v1/directions?key=YOUR_API_KEY&origin=Lilongwe&destination=${encodeURIComponent(destination)}`;
+      } else {
+        document.getElementById('lessonResult').innerHTML = `
+          <div class="alert alert-warning">Please fill in all fields.</div>
+        `;
+      }
+    });
+
+    // Handle student search
+    document.getElementById('searchBtn').addEventListener('click', function() {
+      const query = document.getElementById('studentSearch').value.trim();
+      if (!query) {
+        const info = document.getElementById('studentInfo');
+        info.className = 'alert alert-warning';
+        info.textContent = 'Enter a student name or phone.';
+        return;
+      }
+
+      fetch('/Mobile/search_student.php?q=' + encodeURIComponent(query))
+        .then(res => res.json())
+        .then(data => {
+          const info = document.getElementById('studentInfo');
+          if (Array.isArray(data) && data.length > 0) {
+            const s = data[0]; // first match
+            info.className = 'alert alert-info';
+            info.innerHTML = `
+              <p class="mb-1"><strong>First Name:</strong> ${s.firstname}</p>
+              <p class="mb-1"><strong>Licence:</strong> ${s.licence}</p>
+              <p class="mb-0"><strong>Period:</strong> ${s.period}</p>
+            `;
+          } else {
+            info.className = 'alert alert-warning';
+            info.textContent = 'No student found.';
+          }
+        })
+        .catch(err => {
+          console.error('Fetch error:', err);
+          const info = document.getElementById('studentInfo');
+          info.className = 'alert alert-danger';
+          info.textContent = 'Error fetching student data.';
+        });
+    });
+  </script>
+</body>
+</html>
